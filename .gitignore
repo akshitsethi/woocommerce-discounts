@@ -1,0 +1,13 @@
+vendor
+bin
+cover
+tmp
+build
+.idea
+*~
+*.zip
+.DS_Store
+*.phar
+reports
+clover.xml
+dist
