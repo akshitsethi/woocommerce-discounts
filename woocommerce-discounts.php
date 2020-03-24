@@ -1,51 +1,36 @@
 <?php
 /**
- * Plugin Name: WooCommerce Framework Plugin TODO: plugin name
- * Plugin URI: http://www.woocommerce.com/products/ TODO: product URL
- * Description: TODO: plugin description
- * Author: SkyVerge
- * Author URI: http://www.woocommerce.com
- * Version: 1.0.0 TODO: plugin version
- * Text Domain: TODO: plugin textdomain
+ * Plugin Name: WooCommerce Discounts
+ * Plugin URI: https://akshitsethi.com
+ * Description: WooCommerce plugin which selectively provides discounts to existing customers.
+ * Author: Akshit Sethi
+ * Author URI: https://akshitsethi.com
+ * Version: 1.0.0
+ * Text Domain: woocommerce-discounts
  * Domain Path: /i18n/languages/
  *
- * Copyright: (c) 2011-2019, SkyVerge, Inc. (info@skyverge.com)
+ * Copyright: (c) Akshit Sethi (akshitsethi@gmail.com)
  *
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  *
- * @package   TODO: package
- * @author    SkyVerge
- * @copyright Copyright (c) 2011-2019, SkyVerge, Inc.
+ * @package   AkshitSethi/WooCommerceDiscounts
+ * @author    Akshit Sethi
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU General Public License v3.0
- *
- * Woo: 99999:00000000000000000000000000000000 TODO: updater keys
  */
 
 defined( 'ABSPATH' ) or exit;
 
-// Required functions
-if ( ! function_exists( 'woothemes_queue_update' ) ) {
-	require_once( plugin_dir_path( __FILE__ ) . 'woo-includes/woo-functions.php' );
-}
+require_once __DIR__ . '/vendor/autoload.php';
 
-// Plugin updates
-woothemes_queue_update( plugin_basename( __FILE__ ), '00000000000000000000000000000000', '99999' ); // TODO: updater keys
-
-// WC active check
-if ( ! is_woocommerce_active() ) {
-	return;
-}
+use AkshitSethi\WooCommerceDiscounts\Init;
 
 /**
  * The plugin loader class.
  *
- * TODO: Rename the class, and replace all instances of SV_WC_Framework_Plugin_Loader
- * TODO: Update all version numbers and @since tags to the plugin version
- *
  * @since 1.0.0
  */
-class SV_WC_Framework_Plugin_Loader {
+class WooCommerce_Discounts {
 
 
 	/** minimum PHP version required by this plugin */
@@ -58,13 +43,12 @@ class SV_WC_Framework_Plugin_Loader {
 	const MINIMUM_WC_VERSION = '3.0.9';
 
 	/** SkyVerge plugin framework version used by this plugin */
-	const FRAMEWORK_VERSION = '5.6.1'; // TODO: framework version
+	const FRAMEWORK_VERSION = '5.6.1';
 
 	/** the plugin name, for displaying notices */
-	const PLUGIN_NAME = 'WooCommerce Framework Plugin'; // TODO: plugin name
+	const PLUGIN_NAME = 'WooCommerce Discounts';
 
-
-	/** @var SV_WC_Framework_Plugin_Loader single instance of this class // TODO: replace with loader class name */
+	/** @var WooCommerce_Discounts single instance of this class */
 	private static $instance;
 
 	/** @var array the admin notices to add */
@@ -76,7 +60,7 @@ class SV_WC_Framework_Plugin_Loader {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function __construct() {
+	public function __construct() {
 
 		register_activation_hook( __FILE__, array( $this, 'activation_check' ) );
 
@@ -86,9 +70,10 @@ class SV_WC_Framework_Plugin_Loader {
 		add_action( 'admin_notices', array( $this, 'admin_notices' ), 15 );
 
 		// if the environment check fails, initialize the plugin
-		if ( $this->is_environment_compatible() ) {
-			add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
-		}
+		// if ( $this->is_environment_compatible() ) {
+		// 	add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
+		// }
+		$this->init_plugin();
 	}
 
 
@@ -121,34 +106,12 @@ class SV_WC_Framework_Plugin_Loader {
 	 */
 	public function init_plugin() {
 
-		if ( ! $this->plugins_compatible() ) {
-			return;
-		}
-
-		$this->load_framework();
-
-		/** If the plugin is structured for PSR-4, do the following:
-
-		// autoload plugin and vendor files
-		$loader = require_once( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );
-
-		// register plugin namespace with autoloader
-		$loader->addPsr4( 'SkyVerge\\WooCommerce\\Plugin_Name\\', __DIR__ . '/includes' ); // TODO: plugin namespace here
-
-		// depending on how the plugin is structured, you may need to manually load the file that contains the initial plugin function
-		// require_once( plugin_dir_path( __FILE__ ) . 'includes/Functions.php' ); // TODO: maybe load a file to call your initialization function
-
-		/******************/
-
-		/** Otherwise, for plugins that use the traditional WordPress class-class-name.php structure, simply include the main plugin file:
-
-		// load the main plugin class
-		require_once( plugin_dir_path( __FILE__ ) . 'class-wc-framework-plugin.php' ); // TODO: main plugin class file
-
-		*******************/
+		// if ( ! $this->plugins_compatible() ) {
+		// 	return;
+		// }
 
 		// fire it up!
-		wc_framework_plugin(); // TODO: call the main plugin method
+		new Init();
 	}
 
 
@@ -160,13 +123,9 @@ class SV_WC_Framework_Plugin_Loader {
 	private function load_framework() {
 
 		if ( ! class_exists( '\\SkyVerge\\WooCommerce\\PluginFramework\\' . $this->get_framework_version_namespace() . '\\SV_WC_Plugin' ) ) {
-			require_once( plugin_dir_path( __FILE__ ) . 'lib/skyverge/woocommerce/class-sv-wc-plugin.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'woocommerce/class-sv-wc-plugin.php' );
 		}
 
-		// TODO: remove this if not a payment gateway
-		if ( ! class_exists( '\\SkyVerge\\WooCommerce\\PluginFramework\\' . $this->get_framework_version_namespace() . '\\SV_WC_Payment_Gateway_Plugin' ) ) {
-			require_once( plugin_dir_path( __FILE__ ) . 'lib/skyverge/woocommerce/payment-gateway/class-sv-wc-payment-gateway-plugin.php' );
-		}
 	}
 
 
@@ -207,7 +166,7 @@ class SV_WC_Framework_Plugin_Loader {
 	 */
 	public function activation_check() {
 
-		if ( ! $this->is_environment_compatible() ) {
+		if ( $this->is_environment_compatible() ) {
 
 			$this->deactivate_plugin();
 
@@ -349,7 +308,7 @@ class SV_WC_Framework_Plugin_Loader {
 
 
 	/**
-	 * Displays any admin notices added with \SV_WC_Framework_Plugin_Loader::add_admin_notice()
+	 * Displays any admin notices added with \WooCommerce_Discounts::add_admin_notice()
 	 *
 	 * @internal
 	 *
@@ -397,13 +356,13 @@ class SV_WC_Framework_Plugin_Loader {
 
 
 	/**
-	 * Gets the main \SV_WC_Framework_Plugin_Loader instance.
+	 * Gets the main \WooCommerce_Discounts instance.
 	 *
 	 * Ensures only one instance can be loaded.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return \SV_WC_Framework_Plugin_Loader
+	 * @return \WooCommerce_Discounts
 	 */
 	public static function instance() {
 
@@ -418,4 +377,4 @@ class SV_WC_Framework_Plugin_Loader {
 }
 
 // fire it up!
-SV_WC_Framework_Plugin_Loader::instance();
+WooCommerce_Discounts::instance();

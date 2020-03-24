@@ -34,9 +34,8 @@ lint: ensure
 	bin/phpcs --standard=WordPress src --ignore=src/vendor
 	bin/phpcs --standard=WordPress tests --ignore=vendor
 
-psr: src/vendor
+psr:
 	composer dump-autoload -a
-	cd src && composer dump-autoload -a
 
 i18n: src/vendor
 	wp i18n make-pot src src/i18n/$(SLUG).pot
