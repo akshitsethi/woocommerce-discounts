@@ -70,10 +70,9 @@ class WooCommerce_Discounts {
 		add_action( 'admin_notices', array( $this, 'admin_notices' ), 15 );
 
 		// if the environment check fails, initialize the plugin
-		// if ( $this->is_environment_compatible() ) {
-		// 	add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
-		// }
-		$this->init_plugin();
+		if ( $this->is_environment_compatible() ) {
+			add_action( 'plugins_loaded', array( $this, 'init_plugin' ) );
+		}
 	}
 
 
@@ -106,9 +105,12 @@ class WooCommerce_Discounts {
 	 */
 	public function init_plugin() {
 
-		// if ( ! $this->plugins_compatible() ) {
-		// 	return;
-		// }
+		if ( ! $this->plugins_compatible() ) {
+			return;
+		}
+
+		// load the framework
+		$this->load_framework();
 
 		// fire it up!
 		new Init();
@@ -166,7 +168,7 @@ class WooCommerce_Discounts {
 	 */
 	public function activation_check() {
 
-		if ( $this->is_environment_compatible() ) {
+		if ( ! $this->is_environment_compatible() ) {
 
 			$this->deactivate_plugin();
 

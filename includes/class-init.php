@@ -18,13 +18,13 @@ defined( 'ABSPATH' ) or exit;
 
 use SkyVerge\WooCommerce\PluginFramework\v5_6_1\SV_WC_Plugin;
 
-if ( ! class_exists( '\\AkshitSethi\\WooCommerceDiscounts\\Init' ) ) :  
+if ( ! class_exists( '\\AkshitSethi\\WooCommerceDiscounts\\Init' ) ) :
 
 /**
  * WooCommerce Discounts Init Class
  *
- * This class extends the abstract class of the framework and adds the required functionality
- * on top of it.
+ * This class extends the abstract class of the framework and adds the required
+ * functionality on top of it.
  *
  * @version 1.0.0
  */
@@ -36,49 +36,94 @@ class Init extends SV_WC_Plugin {
 	 * @since 1.0.0
 	 */
   public function __construct() {
-    // initialize the plugin admin
-    add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-    add_filter( 'plugin_row_meta', [ $this, 'meta_links' ], 10, 2 );
+
+    add_filter( 'woocommerce_get_sections_products', array( $this, 'add_section' ) );
+    add_filter( 'woocommerce_get_settings_products', array( $this, 'add_settings' ), 10, 2 );
   }
 
 
   /**
-	 * Initializes the plugin admin.
+	 * Adds a discount section to the WooCommerce products section.
 	 *
 	 * @since 1.0.0
+   * @return array All sections for WC product settings
 	 */
-  public function admin_menu() {
-    if ( is_admin() && current_user_can( 'manage_options' ) ) {
-      add_options_page(
-        esc_html__( 'WooCommerce Discounts', 'woocommerce-discounts' ),
-        esc_html__( 'WooCommerce Discounts', 'woocommerce-discounts' ),
-        'manage_options',
-        'wc_discounts_options',
-        array( $this, 'settings' )
-      );
-    }
+  public function add_section( $sections ) {
+
+    $sections['wc_discounts'] = esc_html__( 'Discounts', 'woocommerce-discounts' );
+  	return $sections;
   }
 
 
   /**
-   * Adds custom links to the meta on the plugins page.
-   * 
-   * @param array  $links Array of links for the plugins
-   * @param string $file  Name of the main plugin file
-   * 
-   * @return array
+   * Options for the admin to manage the discounts section.
+   *
+   * @since 1.0.0
+   * @return array All settings for the WC products section
    */
-  public function meta_links( $links, $file ) {
-    if ( strpos( $file, 'woocommerce-discounts.php' ) !== FALSE ) {
-      $new_links = [
-        '<a href="https://www.facebook.com/akshitsethi" target="_blank">' . esc_html__( 'Facebook', 'widgets-bundle' ) . '</a>',
-        '<a href="https://twitter.com/akshitsethi" target="_blank">' . esc_html__( 'Twitter', 'widgets-bundle' ) . '</a>'
-      ];
+  public function add_settings( $options, $current_section ) {
 
-      $links = array_merge( $links, $new_links );
+    // Check for the required section to add the options
+    if ( 'wc_discounts' === $current_section ) {
+
+      $section_options    = array();
+
+      // Section title
+      $section_options[]  = array(
+        'name'  => esc_html__( 'WooCommerce Discounts', 'woocommerce-discounts' ),
+        'type'  => 'title',
+        'desc'  => esc_html__( 'Configure options for the WooCommerce Discounts plugin.', 'woocommerce-discounts' ),
+        'id'    => 'wc_discounts'
+      );
+
+      // Number of profile pictures allowed
+      $section_options[]  = array(
+        'name'      => esc_html__( 'No. of Profile Pictures', 'woocommerce-discounts' ),
+        'desc_tip'  => esc_html__( 'Maximum number of profile pictures a user can upload to their profile.', 'woocommerce-discounts' ),
+        'id'        => 'wc_discounts_profile_limit',
+        'type'      => 'select',
+        'default'   => 5,
+        'options'   => array(
+          1   => '1',
+          2   => '2',
+          3   => '3',
+          4   => '4',
+          5   => '5',
+          6   => '6',
+          7   => '7',
+          8   => '8',
+          9   => '9',
+          10  => '10'
+        )
+      );
+
+      // Discount percentage
+      $section_options[]  = array(
+        'name'      => esc_html__( 'Discount Offered', 'woocommerce-discounts' ),
+        'desc_tip'  => esc_html__( 'Percentage of discount offered to eligible customers at the time of checkout.', 'woocommerce-discounts' ),
+        'id'        => 'wc_discounts_percentage',
+        'type'      => 'select',
+        'default'   => 15,
+        'options'   => array(
+          5    => '5%',
+          10   => '10%',
+          15   => '15%',
+          20   => '20%',
+          25   => '25%',
+          30   => '30%'
+        )
+      );
+
+      $section_options[] = array(
+        'type'  => 'sectionend',
+        'id'    => 'wc_discounts'
+      );
+
+      return $section_options;
     }
 
-    return $links;
+    // If not, then pass on the options
+    return $options;
   }
 
 
