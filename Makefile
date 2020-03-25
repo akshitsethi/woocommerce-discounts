@@ -7,7 +7,8 @@ bin/linux/amd64/github-release:
 	chmod +x bin/linux/amd64/github-release
 	rm linux-amd64-github-release.tar.bz2
 
-vendor: composer install --dev
+vendor:
+	composer install --dev
 	composer dump-autoload -a
 
 clover.xml: vendor test
@@ -16,6 +17,28 @@ unit: test
 
 test: vendor
 	bin/phpunit --coverage-html=./reports
+
+build: vendor
+	sed -i "s/@##VERSION##@/${VERSION}/" $(SLUG).php
+	mkdir -p build
+	rm -rf vendor
+	composer install --no-dev
+	composer dump-autoload -a
+
+	# Copy files and folders
+	cp -ar assets $(SLUG)
+	cp -ar i18n $(SLUG)
+	cp -ar includes $(SLUG)
+	cp -ar vendor $(SLUG)
+	cp -ar woocommerce $(SLUG)
+	cp license.txt $(SLUG)
+	cp README.md $(SLUG)
+	cp $(SLUG).php $(SLUG)
+
+	zip -r $(SLUG).zip $(SLUG)
+	rm -rf $(SLUG)
+	mv $(SLUG).zip build/
+	sed -i "s/${VERSION}/@##VERSION##@/" $(SLUG).php
 
 release:
 	git stash

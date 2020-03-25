@@ -5,7 +5,7 @@
  * Description: WooCommerce plugin which selectively provides discounts to existing customers.
  * Author: Akshit Sethi
  * Author URI: https://akshitsethi.com
- * Version: 1.0.0
+ * Version: @##VERSION##@
  * Text Domain: woocommerce-discounts
  * Domain Path: /i18n/languages/
  *
@@ -27,8 +27,6 @@ use AkshitSethi\WooCommerceDiscounts\Init;
 
 /**
  * The plugin loader class.
- *
- * @since 1.0.0
  */
 class WooCommerce_Discounts {
 
@@ -52,7 +50,7 @@ class WooCommerce_Discounts {
 	const PLUGIN_SLUG = 'woocommerce-discounts';
 
 	/** plugin version */
-	const PLUGIN_VERSION = '1.0.0';
+	const PLUGIN_VERSION = '@##VERSION##@';
 
 	/** @var WooCommerce_Discounts single instance of this class */
 	private static $instance;
@@ -63,8 +61,6 @@ class WooCommerce_Discounts {
 
 	/**
 	 * Constructs the class.
-	 *
-	 * @since 1.0.0
 	 */
 	public function __construct() {
 
@@ -84,30 +80,24 @@ class WooCommerce_Discounts {
 
 	/**
 	 * Cloning instances is forbidden due to singleton pattern.
-	 *
-	 * @since 1.0.0
 	 */
 	public function __clone() {
 
-		_doing_it_wrong( __FUNCTION__, sprintf( 'You cannot clone instances of %s.', get_class( $this ) ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, sprintf( 'You cannot clone instances of %s.', get_class( $this ) ), '@##VERSION##@' );
 	}
 
 
 	/**
 	 * Unserializing instances is forbidden due to singleton pattern.
-	 *
-	 * @since 1.0.0
 	 */
 	public function __wakeup() {
 
-		_doing_it_wrong( __FUNCTION__, sprintf( 'You cannot unserialize instances of %s.', get_class( $this ) ), '1.0.0' );
+		_doing_it_wrong( __FUNCTION__, sprintf( 'You cannot unserialize instances of %s.', get_class( $this ) ), '@##VERSION##@' );
 	}
 
 
 	/**
 	 * Initializes the plugin.
-	 *
-	 * @since 1.0.0
 	 */
 	public function init_plugin() {
 
@@ -125,8 +115,6 @@ class WooCommerce_Discounts {
 
 	/**
 	 * Loads the base framework classes.
-	 *
-	 * @since 1.0.0
 	 */
 	private function load_framework() {
 
@@ -140,8 +128,6 @@ class WooCommerce_Discounts {
 	/**
 	 * Gets the framework version in namespace form.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return string
 	 */
 	public function get_framework_version_namespace() {
@@ -152,8 +138,6 @@ class WooCommerce_Discounts {
 
 	/**
 	 * Gets the framework version used by this plugin.
-	 *
-	 * @since 1.0.0
 	 *
 	 * @return string
 	 */
@@ -169,8 +153,6 @@ class WooCommerce_Discounts {
 	 * Based on http://wptavern.com/how-to-prevent-wordpress-plugins-from-activating-on-sites-with-incompatible-hosting-environments
 	 *
 	 * @internal
-	 *
-	 * @since 1.0.0
 	 */
 	public function activation_check() {
 
@@ -187,8 +169,6 @@ class WooCommerce_Discounts {
 	 * Checks the environment on loading WordPress, just in case the environment changes after activation.
 	 *
 	 * @internal
-	 *
-	 * @since 1.0.0
 	 */
 	public function check_environment() {
 
@@ -205,8 +185,6 @@ class WooCommerce_Discounts {
 	 * Adds notices for out-of-date WordPress and/or WooCommerce versions.
 	 *
 	 * @internal
-	 *
-	 * @since 1.0.0
 	 */
 	public function add_plugin_notices() {
 
@@ -236,8 +214,6 @@ class WooCommerce_Discounts {
 	/**
 	 * Determines if the required plugins are compatible.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return bool
 	 */
 	private function plugins_compatible() {
@@ -248,8 +224,6 @@ class WooCommerce_Discounts {
 
 	/**
 	 * Determines if the WordPress compatible.
-	 *
-	 * @since 1.0.0
 	 *
 	 * @return bool
 	 */
@@ -265,8 +239,6 @@ class WooCommerce_Discounts {
 
 	/**
 	 * Determines if the WooCommerce compatible.
-	 *
-	 * @since 1.0.0
 	 *
 	 * @return bool
 	 */
@@ -284,8 +256,6 @@ class WooCommerce_Discounts {
 	 * Deactivates the plugin.
 	 *
 	 * @internal
-	 *
-	 * @since 1.0.0
 	 */
 	protected function deactivate_plugin() {
 
@@ -299,8 +269,6 @@ class WooCommerce_Discounts {
 
 	/**
 	 * Adds an admin notice to be displayed.
-	 *
-	 * @since 1.0.0
 	 *
 	 * @param string $slug the slug for the notice
 	 * @param string $class the css class for the notice
@@ -319,8 +287,6 @@ class WooCommerce_Discounts {
 	 * Displays any admin notices added with \WooCommerce_Discounts::add_admin_notice()
 	 *
 	 * @internal
-	 *
-	 * @since 1.0.0
 	 */
 	public function admin_notices() {
 
@@ -340,8 +306,6 @@ class WooCommerce_Discounts {
 	 *
 	 * Override this method to add checks for more than just the PHP version.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @return bool
 	 */
 	private function is_environment_compatible() {
@@ -352,8 +316,6 @@ class WooCommerce_Discounts {
 
 	/**
 	 * Gets the message for display when the environment is incompatible with this plugin.
-	 *
-	 * @since 1.0.0
 	 *
 	 * @return string
 	 */
@@ -367,8 +329,6 @@ class WooCommerce_Discounts {
 	 * Gets the main \WooCommerce_Discounts instance.
 	 *
 	 * Ensures only one instance can be loaded.
-	 *
-	 * @since 1.0.0
 	 *
 	 * @return \WooCommerce_Discounts
 	 */
