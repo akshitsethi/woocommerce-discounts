@@ -1,8 +1,13 @@
 {
-    "name": "skyverge/wc-plugin-framework",
-    "description": "The official SkyVerge WooCommerce plugin framework",
-    "version": "5.6.1",
+    "name": "akshitsethi/woocommerce-discounts",
+    "description": "WooCommerce plugin which selectively provides discounts to existing customers.",
+    "version": "1.0.0",
     "require-dev": {
         "lucatume/wp-browser": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "AkshitSethi\\WooCommerceDiscounts\\": "includes"
+        }
     }
 }

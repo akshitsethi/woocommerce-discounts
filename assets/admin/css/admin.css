@@ -1,0 +1,56 @@
+.wc-profile-photos {
+  margin-bottom: 1rem;
+}
+
+.wc-profile-photos .no-photos {
+  display: inline-block;
+  font-size: 1rem;
+  background: #fafafa;
+  color: #909090;
+  padding: 1rem;
+}
+
+.wc-photo-list li {
+  display: inline-block;
+  max-width: 80px;
+  align-items: center;
+  padding: 0.250rem;
+}
+
+.wc-photo-list li img {
+  display: block;
+  margin-bottom: 0.500rem;
+}
+
+.wc-photo-list li:hover img {
+  box-shadow: 0 0 4px 1px rgba(0,0,0,0.20);
+}
+
+.wc-photo-list li .button {
+  visibility: hidden;
+}
+
+.wc-photo-list li:hover .button {
+  visibility: visible;
+}
+
+.wc-profile-photo {
+  max-width: 75px;
+  height: auto;
+  border-radius: 100%;
+}
+
+.wc-response {
+  display: none;
+  padding: 0.750rem;
+  background: #29f1c3;
+  color: #ffffff;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 782px) {
+  .wp-core-ui .button {
+    padding: 0;
+  }
+}
