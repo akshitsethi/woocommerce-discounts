@@ -37,8 +37,8 @@ lint: ensure
 psr:
 	composer dump-autoload -a
 
-i18n: src/vendor
-	wp i18n make-pot src src/i18n/$(SLUG).pot
+i18n:
+	wp i18n make-pot ./ i18n/languages/$(SLUG).pot
 
 cover: vendor
 	bin/coverage-check clover.xml 100
