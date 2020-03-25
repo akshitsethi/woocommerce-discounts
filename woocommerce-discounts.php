@@ -48,6 +48,12 @@ class WooCommerce_Discounts {
 	/** the plugin name, for displaying notices */
 	const PLUGIN_NAME = 'WooCommerce Discounts';
 
+	/** the plugin slug, for used in scripts */
+	const PLUGIN_SLUG = 'woocommerce-discounts';
+
+	/** plugin version */
+	const PLUGIN_VERSION = '1.0.0';
+
 	/** @var WooCommerce_Discounts single instance of this class */
 	private static $instance;
 
