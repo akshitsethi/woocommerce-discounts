@@ -53,7 +53,7 @@
 
             for (var key in data.photos) {
               if (data.photos.hasOwnProperty(key)) {
-                html += '<li><img src="' + data.photos[key] + '" class= "wc-profile-photo"><a href="javascript:;" data-id="' + key + '" class="button button-link">' + wc_discounts_l10n.default + '</a></li>';
+                html += '<li><img src="' + data.photos[key] + '" class= "wc-profile-photo"><a href="javascript:;" data-id="' + key + '" class="button button-link wc-set-default">' + wc_discounts_l10n.default + '</a></li>';
               }
             }
 
@@ -69,7 +69,7 @@
       media_frame.open();
     });
 
-    $('.wc-set-default').on('click', function (e) {
+    $(document).on('click', '.wc-set-default', function (e) {
       e.preventDefault();
 
       var media_id = $(this).data('id');
